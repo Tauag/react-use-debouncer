@@ -1,2 +1,6 @@
 // eslint-disable-next-line import/prefer-default-export
-export { default as useDebouncedState } from './useDebouncedState';
+import useDebouncedState from './useDebouncedState';
+
+export default {
+  useDebouncedState,
+};
