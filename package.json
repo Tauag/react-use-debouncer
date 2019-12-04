@@ -1,6 +1,6 @@
 {
   "name": "react-use-debouncer",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Debounced state hook for ReactJS",
   "main": "src/index.js",
   "module": "src/index.js",
