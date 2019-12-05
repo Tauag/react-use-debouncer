@@ -1,6 +1,6 @@
 {
   "name": "react-use-debouncer",
-  "version": "0.1.5",
+  "version": "0.1.8",
   "description": "Debounced state hook for ReactJS",
   "main": "lib/index.js",
   "repository": {
@@ -12,7 +12,7 @@
     "url": "https://github.com/Tauag/react-use-debouncer/issues"
   },
   "files": [
-    "src"
+    "lib"
   ],
   "peerDependencies": {
     "react": ">=16.8.0"

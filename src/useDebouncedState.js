@@ -9,7 +9,7 @@ export default function useDebouncedState(initialValue, delay = 500) {
       setState(debouncedState);
     }, delay);
 
-    return clearTimeout(timer);
+    return () => clearTimeout(timer);
   }, [debouncedState, delay]);
 
   return [state, setDebouncedState];
