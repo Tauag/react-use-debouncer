@@ -1,6 +1,6 @@
 {
   "name": "react-use-debouncer",
-  "version": "0.1.8",
+  "version": "1.0.0",
   "description": "Debounced state hook for ReactJS",
   "main": "lib/index.js",
   "repository": {
@@ -29,6 +29,12 @@
     {
       "path": "src/index.js"
     }
+  ],
+  "keywords": [
+    "react",
+    "react-hooks",
+    "hooks",
+    "debounce"
   ],
   "devDependencies": {
     "@babel/cli": "^7.7.4",
