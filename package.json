@@ -20,6 +20,7 @@
   "scripts": {
     "build": "rm -rf lib && mkdir lib &&  babel src -d lib",
     "test": "react-scripts test",
+    "test:CI": "CI=true react-scripts test --env=jsdom",
     "size": "size-limit"
   },
   "eslintConfig": {
