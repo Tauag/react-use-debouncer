@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import useDebouncedCallback from './useDebouncedCallback';
 
 /**
  * State hook that outputs state and a setState function that debounces on call
@@ -9,13 +10,12 @@ import { useState, useEffect } from 'react';
 export default function useDebouncedState(initialValue, delay = 500) {
   const [state, setState] = useState(initialValue);
   const [debouncedState, setDebouncedState] = useState(initialValue);
+  const [debouncedCallback] = useDebouncedCallback(() => {
+    setState(debouncedState);
+  }, delay);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setState(debouncedState);
-    }, delay);
-
-    return () => clearTimeout(timer);
+    return debouncedCallback();
   }, [debouncedState, delay]);
 
   return [state, setDebouncedState];
