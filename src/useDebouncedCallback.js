@@ -1,16 +1,17 @@
-import { useCallback } from 'react';
+import { useCallback, useRef } from 'react';
 
+// options will be implemented in later version
 export default function useDebouncedCallback(callback, delay, options = { leading: false }) {
   const { leading } = options;
-  let timer = null;
+  const timeout = useRef(null);
 
-  const cancelCallback = () => {
-    clearTimeout(timer);
-  };
+  const cancelCallback = useCallback(() => {
+    clearTimeout(timeout.current);
+  }, []);
 
   const debouncedCallback = useCallback(() => {
-    timer = setTimeout(callback, delay);
-    return () => clearTimeout(timer);
+    timeout.current = setTimeout(callback, delay);
+    return () => clearTimeout(timeout.current);
   }, [callback, delay, leading]);
 
   return [debouncedCallback, cancelCallback];

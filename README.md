@@ -14,10 +14,12 @@ or via yarn:<br/>
 
 ## Usage
 
+### useDebouncedState
+
 ```javascript
 import { useDebouncedState } from 'react-use-debouncer';
 
-const Example = () => {
+const useStateExample = () => {
   const [state, setState] = useDebouncedState('Initial');
 
   return (
@@ -26,6 +28,20 @@ const Example = () => {
       <input onChange={({ target: { value } }) => setState(value)} />
     </div>
   );
+};
+```
+
+### useDebouncedCallback
+
+```javascript
+import { useDebouncedCallback } from 'react-use-debouncer';
+
+const sampleFunction = () => console.log('There should be a delay before I appear!');
+
+const useCallbackExample = () => {
+  const [debouncedCallback, cancelCallback] = useDebouncedCallback(sampleFunction);
+
+  return <button onClick={() => debouncedCallback()}>Click Me!</button>;
 };
 ```
 
