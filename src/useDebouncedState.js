@@ -14,9 +14,7 @@ export default function useDebouncedState(initialValue, delay = 500) {
     setState(debouncedState);
   }, delay);
 
-  useEffect(() => {
-    return debouncedCallback();
-  }, [debouncedState, delay]);
+  useEffect(() => debouncedCallback(), [debouncedState, delay]);
 
   return [state, setDebouncedState];
 }
