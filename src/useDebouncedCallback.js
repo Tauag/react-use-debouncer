@@ -11,8 +11,7 @@ export default function useDebouncedCallback(callback, delay, options = { leadin
 
   const debouncedCallback = useCallback(() => {
     timeout.current = setTimeout(callback, delay);
-    return () => clearTimeout(timeout.current);
-  }, [callback, delay, leading]);
+  }, [callback, delay, leading, cancelCallback]);
 
   return [debouncedCallback, cancelCallback];
 }

@@ -28,16 +28,16 @@ const CancelComponent = ({ callback, cancel = true }) => {
 jest.useFakeTimers();
 
 describe('Test useDebouncedCallback hook', () => {
-  test('Inital value passes', () => {
-    const component = create(<TestComponent value="inital" />);
+  test('initial value passes', () => {
+    const component = create(<TestComponent value="initial" />);
     const instance = component.root;
 
-    expect(instance.findByProps({ className: 'state-value' }).children[0]).toEqual('inital');
+    expect(instance.findByProps({ className: 'state-value' }).children[0]).toEqual('initial');
   });
 
   test('State change with default passes', () => {
-    const component = create(<TestComponent key="test" value="inital" />);
-    expect(component.root.findByProps({ className: 'state-value' }).children[0]).toEqual('inital');
+    const component = create(<TestComponent key="test" value="initial" />);
+    expect(component.root.findByProps({ className: 'state-value' }).children[0]).toEqual('initial');
 
     component.update(<TestComponent key="test" value="changed" />);
     act(() => {
@@ -49,20 +49,61 @@ describe('Test useDebouncedCallback hook', () => {
   test('Function should be called once', () => {
     const mockCallback = jest.fn();
 
-    create(<CancelComponent callback={mockCallback} cancel={false} />);
+    const component = create(<CancelComponent callback={mockCallback} cancel={false} />);
+    act(() => {
+      jest.runAllTimers();
+    });
+
+    component.update(<CancelComponent callback={mockCallback} />);
+    expect(mockCallback.mock.calls.length).toEqual(1);
+  });
+
+  test('Function should be called twice', () => {
+    const mockCallback = jest.fn();
+
+    const component = create(<CancelComponent callback={mockCallback} cancel={false} />);
+    act(() => {
+      jest.runAllTimers();
+    });
+
+    component.update(<CancelComponent callback={mockCallback} />);
+    act(() => {
+      jest.runAllTimers();
+    });
+
+    component.update(<CancelComponent callback={mockCallback} cancel={false} />);
+    act(() => {
+      jest.runAllTimers();
+    });
+
+    expect(mockCallback.mock.calls.length).toEqual(2);
+  });
+
+  test('Intermediate function calls not triggered', () => {
+    const mockCallback = jest.fn();
+
+    const component = create(<CancelComponent callback={() => mockCallback(1)} cancel={false} />);
+    act(() => {
+      jest.runAllTimers();
+    });
+
+    component.update(<CancelComponent callback={() => mockCallback(2)} />);
+    act(() => {
+      jest.runAllTimers();
+    });
+
+    expect(mockCallback).toHaveBeenCalledWith(1);
+    expect(mockCallback).toHaveBeenCalledTimes(1);
+  });
+
+  test('Debounced function is able to be cancelled', () => {
+    const mockCallback = jest.fn();
+
+    const component = create(<CancelComponent callback={mockCallback} />);
+    component.update(<CancelComponent callback={mockCallback} cancel={false} />);
     act(() => {
       jest.runAllTimers();
     });
     expect(mockCallback.mock.calls.length).toEqual(1);
-  });
-
-  test('Canceling state change passes', () => {
-    const mockCallback = jest.fn();
-
-    create(<CancelComponent callback={mockCallback} />);
-    act(() => {
-      jest.runAllTimers();
-    });
-    expect(mockCallback.mock.calls.length).toEqual(0);
   });
 });

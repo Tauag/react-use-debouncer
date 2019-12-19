@@ -11,6 +11,35 @@ or via yarn:<br/>
 ## Features
 
 - Debounced state
+- Cancelable debounced callback function
+
+## Docs
+
+### useDebouncedState
+
+```javascript
+const [state, setState] = useDebouncedState(initialValue, delay);
+```
+
+- **initialValue**: The initial value that state is initialized with
+- **delay**(_optional_): Number indicating the milliseconds to wait before setting state
+
+Returns an array containing the debounced state and a setState function.
+
+`ex: [state, setState]`
+
+### useDebouncedCallback
+
+```javascript
+const [debouncedCallback, cancelCallback] = useDebouncedCallback(callback, delay);
+```
+
+- **callback**: Callback function to be debounced
+- **delay**(_optional_): Number indicating the milliseconds to wait before calling the function
+
+Returns an array containing the debounced callback function and a cancel function
+
+`ex: [debouncedCallback, cancelCallback]`
 
 ## Usage
 
@@ -31,6 +60,8 @@ const useStateExample = () => {
 };
 ```
 
+Or check it out on [CodeSandbox](https://codesandbox.io/embed/hardcore-goodall-iiwym?fontsize=14&hidenavigation=1&theme=dark)
+
 ### useDebouncedCallback
 
 ```javascript
@@ -45,27 +76,8 @@ const useCallbackExample = () => {
 };
 ```
 
-Or check it out on [CodeSandbox](https://codesandbox.io/embed/hardcore-goodall-iiwym?fontsize=14&hidenavigation=1&theme=dark)
-
-## Syntax
-
-```javascript
-const [state, setState] = setDebouncedState(initialValue, delay);
-```
-
-### Parameters
-
-- **initialValue**: The initial value that state is initialized with
-- **delay**(_optional_): Number indicating the milliseconds to wait before setting state
-
-### Return
-
-Returns an array containing the debounced state and a setState function.
-
-`ex: [state, setState]`
-
 ## Future
 
-- Debounced callbacks
-- Throttling
-- Cancellable hook
+- Leading & trailing options
+- Better CodeSandBox examples
+- Better docs
