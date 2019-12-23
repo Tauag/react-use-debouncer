@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-undef */
+/* eslint-disable react/jsx-filename-extension */
 import React, { useState, useEffect } from 'react';
 import { create, act } from 'react-test-renderer';
 import useDebouncedCallback from '../useDebouncedCallback';

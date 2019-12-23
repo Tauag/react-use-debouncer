@@ -20,7 +20,7 @@
     "react": ">=16.8.0"
   },
   "scripts": {
-    "build": "rm -rf lib && mkdir lib &&  babel src -d lib",
+    "build": "rm -rf lib && mkdir lib &&  babel src -d lib --ignore src/__tests__",
     "test": "react-scripts test",
     "test:CI": "CI=true react-scripts test --env=jsdom",
     "size": "size-limit"
