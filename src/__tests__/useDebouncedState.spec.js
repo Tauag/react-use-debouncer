@@ -13,11 +13,12 @@ const TestComponent = ({ value, delay = 500 }) => {
   return <div className="state-value">{state}</div>;
 };
 
-const CancelComponent = ({ value }) => {
-  const [state, setState, cancelCallback] = useDebouncedState(value);
+const CancelComponent = ({ value, delay = 1000, cancel = false }) => {
+  const [state, setState, cancelCallback] = useDebouncedState(value, delay);
+
   useEffect(() => {
     setState(value);
-    cancelCallback();
+    if (cancel) setTimeout(cancelCallback, 500);
   }, [value]);
 
   return <div className="state-value">{state}</div>;
@@ -74,7 +75,7 @@ describe('Test useDebouncedState hook', () => {
     const component = create(<CancelComponent key="test" value="start" />);
     expect(component.root.findByProps({ className: 'state-value' }).children[0]).toEqual('start');
 
-    component.update(<CancelComponent key="test" value="did not cancel" />);
+    component.update(<CancelComponent key="test" value="did not cancel" cancel />);
     act(() => {
       jest.runAllTimers();
     });
