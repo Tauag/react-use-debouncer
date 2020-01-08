@@ -3,7 +3,7 @@ import { useCallback, useRef } from 'react';
 // options will be implemented in later version
 export default function useDebouncedCallback(
   callback,
-  delay,
+  delay = 500,
   options = { leading: false, trailing: true }
 ) {
   const timeout = useRef(null);
