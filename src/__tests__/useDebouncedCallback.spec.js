@@ -19,8 +19,8 @@ const TestComponent = ({ value, delay }) => {
   );
 };
 
-const CancelComponent = ({ callback, cancel = true }) => {
-  const [debouncedCallback, cancelCallback] = useDebouncedCallback(callback);
+const CancelComponent = ({ callback, cancel = true, options = {} }) => {
+  const [debouncedCallback, cancelCallback] = useDebouncedCallback(callback, 500, options);
   debouncedCallback();
   if (cancel) cancelCallback();
   return null;
@@ -101,10 +101,76 @@ describe('Test useDebouncedCallback hook', () => {
     const mockCallback = jest.fn();
 
     const component = create(<CancelComponent callback={mockCallback} />);
+    component.update(<CancelComponent callback={mockCallback} />);
+    act(() => {
+      jest.runAllTimers();
+    });
+    expect(mockCallback.mock.calls.length).toEqual(0);
+  });
+});
+
+describe('Test useDebouncedCallback options', () => {
+  test('Default options pass', () => {
+    const mockCallback = jest.fn();
+
+    const component = create(<CancelComponent callback={mockCallback} />);
     component.update(<CancelComponent callback={mockCallback} cancel={false} />);
+    expect(mockCallback.mock.calls.length).toEqual(0);
     act(() => {
       jest.runAllTimers();
     });
     expect(mockCallback.mock.calls.length).toEqual(1);
+  });
+
+  test('Trailing passes, should be identical to default case', () => {
+    const mockCallback = jest.fn();
+
+    const component = create(
+      <CancelComponent callback={mockCallback} options={{ trailing: true }} />
+    );
+    component.update(
+      <CancelComponent callback={mockCallback} cancel={false} options={{ trailing: true }} />
+    );
+    expect(mockCallback.mock.calls.length).toEqual(0);
+    act(() => {
+      jest.runAllTimers();
+    });
+    expect(mockCallback.mock.calls.length).toEqual(1);
+  });
+
+  test('Leading passes', () => {
+    const mockCallback = jest.fn();
+
+    const component = create(
+      <CancelComponent callback={mockCallback} options={{ leading: true, trailing: false }} />
+    );
+    component.update(
+      <CancelComponent
+        callback={mockCallback}
+        cancel={false}
+        options={{ leading: true, trailing: false }}
+      />
+    );
+    expect(mockCallback.mock.calls.length).toEqual(1);
+    act(() => {
+      jest.runAllTimers();
+    });
+    expect(mockCallback.mock.calls.length).toEqual(1);
+  });
+
+  test('Leading and trailing passes', () => {
+    const mockCallback = jest.fn();
+
+    const component = create(
+      <CancelComponent callback={mockCallback} options={{ leading: true }} />
+    );
+    component.update(
+      <CancelComponent callback={mockCallback} cancel={false} options={{ leading: true }} />
+    );
+    expect(mockCallback.mock.calls.length).toEqual(1);
+    act(() => {
+      jest.runAllTimers();
+    });
+    expect(mockCallback.mock.calls.length).toEqual(2);
   });
 });
